@@ -1,0 +1,93 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: PruneLast=true
+    argocd.argoproj.io/sync-wave: "-2"
+  creationTimestamp: null
+  name: tenant-pipelinename-stagename
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: Consolidate apps on stage
+  destinations:
+  - namespace: '*'
+    server: '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  sourceRepos:
+  - '*'
+status: {}
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  creationTimestamp: null
+  name: tenant-pipelinename-stagename
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      files:
+      - path: apps/**/pipelinename-stagename/config.json
+      repoURL: git@github.com:SergK/edp-copilot.git
+      requeueAfterSeconds: 20
+      revision: ""
+      template:
+        metadata: {}
+        spec:
+          destination: {}
+          project: ""
+          source:
+            repoURL: ""
+  syncPolicy: {}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/managed-by: edp-copilot
+        app.kubernetes.io/name: '{{ appName }}'
+        app.edp.epam.com/stage: stagename
+        app.edp.epam.com/tenant: tenant
+        app.edp.epam.com/pipeline: pipelinename
+      name: tenant-pipelinename-stagename-{{ userGivenName }}
+      namespace: argocd
+    spec:
+      destination:
+        namespace: '{{ destNamespace }}'
+        server: '{{ destServer }}'
+      ignoreDifferences:
+      - group: argoproj.io
+        jsonPointers:
+        - /status
+        kind: Application
+      project: tenant-pipelinename-stagename
+      source:
+        repoURL: '{{ srcChartUrl }}'
+        chart: '{{ srcChartName }}'
+        targetRevision: '{{ srcTargetRevision }}'
+        helm:
+          valueFiles:
+            - values.yaml
+          values: |
+            global:
+              edpName: '{{ destNamespace }}'
+              platform: kubernetes
+              kioskEnabled: false
+              dnsWildCard: example.com
+              database:
+                # below section is used by codebase-operator
+                enabled: false
+                # below section is used by admin-console-operator and edp-install
+                deploy: false
+      syncPolicy:
+        automated:
+          allowEmpty: true
+          prune: true
+          selfHeal: true
+status: {}
