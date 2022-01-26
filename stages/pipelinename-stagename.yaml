@@ -86,6 +86,8 @@ spec:
                 # below section is used by admin-console-operator and edp-install
                 deploy: false
       syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
         automated:
           allowEmpty: true
           prune: true
