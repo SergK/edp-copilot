@@ -1,0 +1,9 @@
+{
+    "appName": "cd-pipeline-operator",
+    "userGivenName": "cd-pipeline-operator",
+    "destNamespace": "tenant-pipelinename-stagename",
+    "destServer": "sandbox",
+    "srcChartUrl": "https://chartmuseum.demo.edp-epam.com",
+    "srcChartName": "cd-pipeline-operator",
+    "srcTargetRevision": "2.10.0"
+}
