@@ -21,7 +21,7 @@ spec:
   project: default
   source:
     path: stages
-    repoURL: ssh://git@github.com:SergK/edp-copilot.git
+    repoURL: git@github.com:SergK/edp-copilot.git
     targetRevision: main
   syncPolicy:
     automated:
@@ -29,7 +29,7 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - allowEmpty=true``
+    - allowEmpty=true
 status:
   health: {}
   summary: {}
