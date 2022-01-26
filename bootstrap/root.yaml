@@ -22,6 +22,7 @@ spec:
   source:
     path: stages
     repoURL: ssh://git@github.com/SergK/edp-copilot.git
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: true
