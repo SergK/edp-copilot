@@ -68,8 +68,8 @@ spec:
         kind: Application
       project: tenant-pipelinename2-stagename
       source:
-        repoURL: '{{ srcPath }}'
-        path: '{{ srcRepoUrl }}'
+        repoURL: '{{ srcRepoUrl }}'
+        path: '{{ srcPath }}'
         targetRevision: '{{ srcTargetRevision }}'
       syncPolicy:
         syncOptions:
