@@ -1,0 +1,9 @@
+{
+    "appName": "cd-pipeline-operator",
+    "userGivenName": "cd-pipeline-operator",
+    "destNamespace": "tenant-pipelinename-stagename2",
+    "destServer": "https://0CB664CE3DFE19738756BE81EC7AB497.sk1.eu-central-1.eks.amazonaws.com",
+    "srcRepoUrl": "https://github.com/epam/edp-cd-pipeline-operator",
+    "srcPath": "deploy-templates",
+    "srcTargetRevision": "v2.10.0"
+}
