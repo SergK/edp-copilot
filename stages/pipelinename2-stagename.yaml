@@ -71,6 +71,20 @@ spec:
         repoURL: '{{ srcRepoUrl }}'
         path: '{{ srcPath }}'
         targetRevision: '{{ srcTargetRevision }}'
+        helm:
+          valueFiles:
+            - values.yaml
+          values: |
+            global:
+              edpName: '{{ destNamespace }}'
+              platform: kubernetes
+              kioskEnabled: false
+              dnsWildCard: example.com
+              database:
+                # below section is used by codebase-operator
+                enabled: false
+                # below section is used by admin-console-operator and edp-install
+                deploy: false
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
