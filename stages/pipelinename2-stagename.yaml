@@ -85,6 +85,8 @@ spec:
                 enabled: false
                 # below section is used by admin-console-operator and edp-install
                 deploy: false
+            image:
+              version: '{{ imageTag }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
