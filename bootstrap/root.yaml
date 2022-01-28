@@ -6,8 +6,9 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/managed-by: edp-copilot
-    app.kubernetes.io/name: root
-  name: root
+    app.kubernetes.io/name: edp-delivery  # tenant name - configurable and must be uniq in cluster
+    app.edp.epam.com/tenant: edp-delivery # tenant name - configurable and must be uniq in cluster
+  name: edp-delivery  # tenant name - configurable and must be uniq in cluster
   namespace: argocd
 spec:
   destination:
