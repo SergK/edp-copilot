@@ -21,7 +21,7 @@ spec:
     kind: Application
   project: default
   source:
-    path: stages
+    path: pipelines
     repoURL: git@github.com:SergK/edp-copilot.git
     targetRevision: main
   syncPolicy:
