@@ -30,7 +30,7 @@ spec:
         app.edp.epam.com/stage: qa
         app.edp.epam.com/tenant: edp-delivery
         app.edp.epam.com/pipeline: mm-dev
-      name: edp-delivery-mm-dev-sit-{{ userGivenName }}
+      name: edp-delivery-mm-dev-qa-{{ userGivenName }}
       namespace: argocd
     spec:
       destination:
