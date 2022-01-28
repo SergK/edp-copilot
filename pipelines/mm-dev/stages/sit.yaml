@@ -1,41 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-options: PruneLast=true
-    argocd.argoproj.io/sync-wave: "-2"
-  creationTimestamp: null
-  name: tenant-pipelinename-stagename
-  namespace: argocd
-spec:
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  description: Consolidate apps on stage
-  destinations:
-  - namespace: '*'
-    server: '*'
-  namespaceResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  sourceRepos:
-  - '*'
-status: {}
-
----
-apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   creationTimestamp: null
-  name: tenant-pipelinename-stagename
+  name: edp-delivery-mm-dev-sit   # tenant-pipeline-stage
   namespace: argocd
 spec:
   generators:
   - git:
       files:
-      - path: apps/**/pipelinename-stagename/config.json
+      - path: apps/**/mm-dev-sit.json    # pipeline-stage.json
       repoURL: git@github.com:SergK/edp-copilot.git
       requeueAfterSeconds: 20
       revision: ""
@@ -52,10 +27,10 @@ spec:
       labels:
         app.kubernetes.io/managed-by: edp-copilot
         app.kubernetes.io/name: '{{ appName }}'
-        app.edp.epam.com/stage: stagename
-        app.edp.epam.com/tenant: tenant
-        app.edp.epam.com/pipeline: pipelinename
-      name: tenant-pipelinename-stagename-{{ userGivenName }}
+        app.edp.epam.com/stage: sit
+        app.edp.epam.com/tenant: edp-delivery
+        app.edp.epam.com/pipeline: mm-dev
+      name: edp-delivery-mm-dev-sit-{{ userGivenName }}
       namespace: argocd
     spec:
       destination:
@@ -66,10 +41,10 @@ spec:
         jsonPointers:
         - /status
         kind: Application
-      project: tenant-pipelinename-stagename
+      project: edp-delivery-mm-dev  # tenant-pipeline
       source:
-        repoURL: '{{ srcChartUrl }}'
-        chart: '{{ srcChartName }}'
+        repoURL: '{{ srcRepoUrl }}'
+        path: '{{ srcPath }}'
         targetRevision: '{{ srcTargetRevision }}'
         helm:
           valueFiles:
@@ -85,6 +60,8 @@ spec:
                 enabled: false
                 # below section is used by admin-console-operator and edp-install
                 deploy: false
+            image:
+              version: '{{ imageTag }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

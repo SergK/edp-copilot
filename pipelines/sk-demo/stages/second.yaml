@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  creationTimestamp: null
+  name: edp-delivery-sk-demo-second   # tenant-pipeline-stage
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      files:
+      - path: apps/**/sk-demo-second.json    # pipeline-stage.json
+      repoURL: git@github.com:SergK/edp-copilot.git
+      requeueAfterSeconds: 20
+      revision: ""
+      template:
+        metadata: {}
+        spec:
+          destination: {}
+          project: ""
+          source:
+            repoURL: ""
+  syncPolicy: {}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/managed-by: edp-copilot
+        app.kubernetes.io/name: '{{ appName }}'
+        app.edp.epam.com/stage: second
+        app.edp.epam.com/tenant: edp-delivery
+        app.edp.epam.com/pipeline: sk-demo
+      name: edp-delivery-sk-demo-second-{{ userGivenName }}
+      namespace: argocd
+    spec:
+      destination:
+        namespace: '{{ destNamespace }}'
+        server: '{{ destServer }}'
+      ignoreDifferences:
+      - group: argoproj.io
+        jsonPointers:
+        - /status
+        kind: Application
+      project: edp-delivery-sk-demo  # tenant-pipeline
+      source:
+        repoURL: '{{ srcChartUrl }}'
+        chart: '{{ srcChartName }}'
+        targetRevision: '{{ srcTargetRevision }}'
+        helm:
+          valueFiles:
+            - values.yaml
+          values: |
+            global:
+              edpName: '{{ destNamespace }}'
+              platform: kubernetes
+              kioskEnabled: false
+              dnsWildCard: example.com
+              database:
+                # below section is used by codebase-operator
+                enabled: false
+                # below section is used by admin-console-operator and edp-install
+                deploy: false
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          allowEmpty: true
+          prune: true
+          selfHeal: true
+status: {}
