@@ -3,7 +3,8 @@
     "userGivenName": "cd-pipeline-operator",
     "destNamespace": "edp-delivery-mm-dev-sit",
     "destServer": "https://0CB664CE3DFE19738756BE81EC7AB497.sk1.eu-central-1.eks.amazonaws.com",
-    "srcChartUrl": "https://chartmuseum.demo.edp-epam.com",
-    "srcChartName": "cd-pipeline-operator",
-    "srcTargetRevision": "2.10.0"
+    "srcRepoUrl": "https://github.com/epam/edp-cd-pipeline-operator",
+    "srcPath": "deploy-templates",
+    "srcTargetRevision": "v2.10.0",
+    "imageTag": "2.11.0-SNAPSHOT.4"
 }
